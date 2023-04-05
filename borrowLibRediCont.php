@@ -1,10 +1,11 @@
 <?php
+session_start();
 require_once 'core/init.php';
 
-$usernameGuest;
-$bookSignature;
 /* Prüfen, ob eine Eingabe erfolgt ist */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    echo $usernameGuest = $_POST['username'];
+    
     if (empty($usernameGuest)) {
         echo '<div class="alert alert-danger text-center" role="alert">
                     <h3>
@@ -13,10 +14,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div> <br>';
         Redirect::comeBack(2);
     } else {
-        echo '<h2>Basariyla giris yaptiniz. Yonlendiriliyorsunuz...</h2> <br>';
         $_SESSION['usernameGuest'] = $usernameGuest;
-        echo $usernameGuest = $_POST['username'] . "<br>";
-        Redirect::goTo('borrowLib.php', 2);
+        echo $usernameGuest
+        echo '<h2>Basariyla giris yaptiniz. Yonlendiriliyorsunuz...</h2> <br>';
+        Redirect::goTo('borrowLib.php', 7);
     }
 }
 ?>
