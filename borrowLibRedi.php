@@ -1,7 +1,9 @@
 <?php
-    require_once 'themes/header.php';
-    require_once 'core/init.php';
-    // require_once '/functions/borrowLibRediCont.php';
+require_once 'themes/header.php';
+require_once 'core/init.php';
+// require_once 'borrowLibRediCont.php';
+
+// require_once '/functions/borrowLibRediCont.php';
 
 ?>
 
@@ -12,11 +14,11 @@
             <div class=" col-md-6 offset-md-3 ">
                 <div class="card  mt-3 bg-light">
                     <div class="card-body ">
-
                         <form method="post" action="
                                             <?php
-                                            htmlspecialchars(__DIR__ . '/functions/borrowLibRediCont.php');
-                                            // Redirect::goTo('borrowLibRediCont.php', 2);
+                                            // header("Location: borrowLibRediCont.php");
+                                            // htmlspecialchars(__DIR__ . '/functions/borrowLibRediCont.php');
+                                            Redirect::goTo('borrowLibRediCont.php', 2);
                                             // Redirect::goTo(__DIR__ . "/functions/borrowLibRediCont.php", 2);
                                             ?>
                                             ">

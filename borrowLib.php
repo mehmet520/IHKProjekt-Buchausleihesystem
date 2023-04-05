@@ -91,11 +91,13 @@ require_once 'core/init.php';
             </div>
         </div>
         </section>
+        
         <?php
         $usernameGuest;
         $bookSignature;
+        echo  $_SESSION['username'];
         if (array_key_exists('username', $_POST)) {
-            echo $usernameGuest = $_POST['username'];
+            echo $usernameGuest = $_SESSION['username'];
 
             ausleihe();
         }

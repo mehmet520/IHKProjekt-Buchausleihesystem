@@ -26,8 +26,10 @@ spl_autoload_register(function ($class) {
 });
 
 
-// require_once 'functions/borrowLibRediCont.php';
+// require_once 'IHK_PRJ/delete/borrowLibRediCont.php';
+// require_once (__DIR__.'/delete/borrowLibRediCont.php');
 // require_once ('/functions/borrowLibRediCont.php');
+require_once 'borrowLibRediCont.php';
 
 
 
