@@ -1,5 +1,5 @@
 <?php
-// session_start();
+session_start();
 require_once 'core/init.php';
 
 /* Prüfen, ob eine Eingabe erfolgt ist */
@@ -18,8 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['usernameGuest'] = $usernameGuest;
         echo '<h2>Basariyla giris yaptiniz. Yonlendiriliyorsunuz...</h2> <br>';
         // sil
-        echo  $usernameGuest1 = $_SESSION['usernameGuest'];
-        Redirect::goTo('borrowLib.php', 7);
+        echo  $_SESSION['usernameGuest'];
+        Redirect::goTo('borrowLib.php', 3);
     }
 }
 ?>

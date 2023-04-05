@@ -2,9 +2,7 @@
 session_start();
 require_once 'themes/header.php';
 require_once 'core/init.php';
-
 ?>
-
 <body>
     <div class=" container-fluid">
         <div class="row ">
@@ -50,12 +48,11 @@ require_once 'core/init.php';
                                             $sql,
                                             PDO::FETCH_BOTH
                                         );
-                                        $buchIdArray = [];
-                                        $counter = -1;
+                                        // $buchIdArray = [];
+                                        // $counter = -1;
                                         foreach ($queryTable as $items) {
-
-                                            $buchId = $items['2'];
-                                            array_push($buchIdArray, $buchId);
+                                            $signature = $items['2'];
+                                            // array_push($buchIdArray, $signature);
                                         ?>
                                             <tr>
                                                 <!-- 0-> benutzerNahme -->
@@ -68,8 +65,8 @@ require_once 'core/init.php';
                                                 <td scope="row">
                                                     <form method="post">
                                                         <input type="submit" name="buchwahl" id="<?= $countId += 1 ?>" class="button" value="Ausleihe" />
-                                                        <input type="label" name="arrayKey" class="button d-none" value="<?= $counter += 1 ?>" />
-                                                        <input type="label" name="signature" class="button d-none" value="<?= $buchId ?>" />
+                                                        <!-- <input type="label" name="arrayKey" class="button d-none" value="<?= $counter += 1 ?>" /> -->
+                                                        <input type="label" name="signature" class="button d-none" value="<?= $signature ?>" />
                                                     </form>
                                                 </td>
                                             </tr>
@@ -95,9 +92,12 @@ require_once 'core/init.php';
         <?php
         $usernameGuest;
         $bookSignature;
+        echo  $_SESSION['usernameGuest'];
         echo  $_SESSION['username'];
+        
         if (array_key_exists('username', $_POST)) {
-            echo $usernameGuest = $_SESSION['username'];
+            echo $usernameGuest = $_POST['username'];
+            echo $_SESSION['username'];
 
             ausleihe();
         }
@@ -110,6 +110,10 @@ require_once 'core/init.php';
         {
             print_r($_POST);
         }
+
+
+
+
         ?>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

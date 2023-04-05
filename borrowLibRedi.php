@@ -17,8 +17,8 @@ require_once 'core/init.php';
                         <form method="post" action="
                                             <?php
                                             // header("Location: borrowLibRediCont.php");
-                                            // htmlspecialchars(__DIR__ . '/functions/borrowLibRediCont.php');
-                                            Redirect::goTo('borrowLibRediCont.php', 2);
+                                            htmlspecialchars('borrowLibRediCont.php');
+                                            // Redirect::goTo('borrowLibRediCont.php', 2);
                                             // Redirect::goTo(__DIR__ . "/functions/borrowLibRediCont.php", 2);
                                             ?>
                                             ">
