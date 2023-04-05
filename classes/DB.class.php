@@ -21,7 +21,7 @@ class DB {
             $this->_pdo->setAttribute(PDO::ATTR_ERRMODE, // Hatalari ekrana yazar.
                                 PDO::ERRMODE_EXCEPTION);
             $this->_pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,  // Varsayilan Fetch modunu objekt olarak ayarlar.
-                                    PDO::FETCH_OBJ); 
+                                    PDO::FETCH_BOTH); 
             echo "connected<br>";
         } catch(PDOException $e) {
             die("Auf die Datenbank konnte nicht mit PDO zugegriffen werden.<br>"
@@ -36,22 +36,67 @@ class DB {
         return self::$PDO_obj;
     }
 
-    public function query($sql, $params = array()) {
+
+
+    public function tableOperations($qeury, $myFetchMode){
+        // exec
+        $this->_query = $this->_pdo->query($qeury, $myFetchMode);
+        return $this->_query;
+    }
+    public function maintanance($qeury){
+        $myTable = $this->_pdo->query($qeury);
+        $myTable->setFetchMode(PDO::FETCH_NUM);
+        return $myTable;
+    }
+
+    private function myQuery($query, $params = null)
+    {
+        //diğer metodlardaki tekrarlı verileri bitirmek için kullanılan metod
+        if (is_null($params)) {
+            $this->_query = $this->_pdo->query($query);
+        } else {
+            $this->_query = $this->_pdo->prepare($query);
+            $this->_query->execute($params);
+        }
+        return $this->_query;
+    }
+    public function getRows($query, $params = null)
+    {
+        //çoklu satır verilerini çekmek için
+        try {
+            return $this->myQuery($query, $params)->fetchAll();
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function getRow($query, $params = null)
+    {
+        //tek satır veri çekmek  için
+        try {
+            return $this->myQuery($query, $params)->fetch();
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function query($sql, $params = array())
+    {
         $this->_error = false;
-        if($this->_query = $this->_pdo->prepare($sql)) {
+        if ($this->_query = $this->_pdo->prepare($sql)) {
             // echo " Success";
             // echo "<br>".$sql."<br>";
             // print_r($params);
             $x = 1;
-            if(count($params)) {
-                foreach($params as $param) {
+            if (count($params)) {
+                foreach ($params as $param) {
                     // echo $param;
                     $this->_query->bindValue($x, $param); // Degerleri key-value olarak bir dizide birlestirir.
                     $x++;
                     // echo $x."<br>";
                 }
             }
-            if($this->_query->execute()) {
+            if ($this->_query->execute()) {
                 // echo "Success";
                 $this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
                 $this->_count = $this->_query->rowCount();
@@ -61,20 +106,6 @@ class DB {
         }
         return $this;
     }   
-
-    public function tableOperations($qeury, $myFetchMode){
-        // exec
-        $myDB = $this->_pdo->query($qeury, $myFetchMode);
-        $myDB =$myDB->_results;
-        return $myDB;
-    }
-    public function maintanance($qeury){
-        $myTable = $this->_pdo->query($qeury);
-        $myTable->setFetchMode(PDO::FETCH_NUM);
-        return $myTable;
-    }
-
-   
    
 // Veritabani baglantisini kapatir.
     public function __destruction() {

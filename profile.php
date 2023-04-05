@@ -3,18 +3,19 @@ session_start();
 require_once 'themes/header.php';
 require_once 'core/init.php';
 
+// Bu yorumu kaldir.
 if (!isset($_SESSION['isLogedIn']) && $_SESSION['isLogedIn'] === false) {
     Redirect::goTo('exit.php');
 } else {
 ?>
+    <!-- ?? data-new-gr-c-s-check-loaded="14.1102.0" -->
 
     <body data-new-gr-c-s-check-loaded="14.1102.0" data-gr-ext-installed="">
-
         <main>
             <div class="container">
                 <div class="col">
-
                     <div class="row">
+                        <!-- Willkommen bei der Internen-Buchausleihesystem -->
                         <div class="px-4 py-5 my-5 text-center">
                             <img class="d-block mx-auto mb-4" src="images\001_university-of-cologne-logo-freelogovectors.net_-400x202.png" alt="" width="226" height="114">
                             <h2 class="fw-bold">
@@ -22,10 +23,8 @@ if (!isset($_SESSION['isLogedIn']) && $_SESSION['isLogedIn'] === false) {
                             </h2>
                         </div>
                     </div>
-                    <div class="b-example-divider"></div>
                     <!-- Auswahl von Self-Service-Modus und Bibliothek-Modus -->
                     <div class="row" text-center>
-
                         <!-- Self-Service-Modus -->
                         <!--Auswahl von Ausleihe oder Liste/Rückgabe/Verlängerung -->
                         <div class="col-sm-6">
@@ -40,12 +39,13 @@ if (!isset($_SESSION['isLogedIn']) && $_SESSION['isLogedIn'] === false) {
                         <div class="col-sm-6">
                             <div class="d-grid gap-3 col-8 mx-auto">
                                 <a class="btn btn-warning btn-lg px-4 gap-3" href="#" role="button">Bibliothek-Modus</a>
-                                <a class="btn btn-info btn-lg px-4 gap-3" href="borrowLib.php" role="button">Ausleihe</a>
+                                <a class="btn btn-info btn-lg px-4 gap-3" 
+                                    href="borrowLibRedi.php" 
+                                    role="button">Ausleihe</a>
                                 <a class="btn btn-secondary btn-lg px-4 gap-3" href="#" role="button">Liste/Rückgabe/Verlängerung</a>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- Auswahl von Ausloggen -->
                 <div class="row">
@@ -60,7 +60,6 @@ if (!isset($_SESSION['isLogedIn']) && $_SESSION['isLogedIn'] === false) {
             </div>
             </div>
         </main>
-        <?php require_once 'themes/footer.php'; ?>
-    <?php
+        <?php require_once 'themes/footer.php'; 
 }
-    ?>
+        ?>

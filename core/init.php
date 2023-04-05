@@ -25,7 +25,11 @@ spl_autoload_register(function ($class) {
     }
 });
 
-require_once 'functions/safe.php';
+
+// require_once 'functions/borrowLibRediCont.php';
+// require_once ('/functions/borrowLibRediCont.php');
+
+
 
 /* 
 spl_autoload_register(function ($className) {
