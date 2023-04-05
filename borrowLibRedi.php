@@ -15,8 +15,9 @@
 
                         <form method="post" action="
                                             <?php
-                                            echo htmlspecialchars("borrowLibRediCont.php");
-                                        // Redirect::goTo('borrowLibRediCont.php', 2);
+                                            htmlspecialchars(__DIR__ . '/functions/borrowLibRediCont.php');
+                                            // Redirect::goTo('borrowLibRediCont.php', 2);
+                                            // Redirect::goTo(__DIR__ . "/functions/borrowLibRediCont.php", 2);
                                             ?>
                                             ">
                             <img class="mb-4 rounded mx-auto d-block" src="images\001_university-of-cologne-logo-freelogovectors.net_-400x202.png" alt="" width="113" height="57" />
