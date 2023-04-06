@@ -1,12 +1,17 @@
 <?php
 session_start();
-require_once 'core/init.php';
+
+require_once $_SERVER["DOCUMENT_ROOT"] . "/IHK_PRJ/themes/aheader.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/IHK_PRJ/core/init.php";
+
 
 /* Prüfen, ob eine Eingabe erfolgt ist */
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $db = DB::getInstance();
     // sil
     echo $usernameGuest = $_POST['username'];
-    
+
     if (empty($usernameGuest)) {
         echo '<div class="alert alert-danger text-center" role="alert">
         <h3>
@@ -16,12 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         Redirect::comeBack(2);
     } else {
         $_SESSION['usernameGuest'] = $usernameGuest;
+        $db->usernameGuest = $usernameGuest;
         echo '<h2>Basariyla giris yaptiniz. Yonlendiriliyorsunuz...</h2> <br>';
         // sil
         echo  $_SESSION['usernameGuest'];
+        echo $db->usernameGuest;
         Redirect::goTo('borrowLib.php', 3);
+        // header("Refresh:6; borrowLibRecord");
     }
 }
+
 ?>
 
 

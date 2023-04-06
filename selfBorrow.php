@@ -1,3 +1,5 @@
+<!-- Kitap Odunc Alma Self-Modus -->
+
 <?php
 require_once 'themes/aheader.php';
 require_once 'core/init.php';
@@ -11,7 +13,7 @@ require_once 'core/init.php';
             <div class="card  mt-3 bg-light">
                 <div class="card-body ">
                     <img class="mb-4 rounded mx-auto d-block" src="images\001_university-of-cologne-logo-freelogovectors.net_-400x202.png" alt="" width="113" height="57" />
-                    <h4 class="text-primary text-center mb-5">Buchausleihsystem Bibliothek-Modus</h4>
+                    <h4 class="text-primary text-center mb-5">Buchausleihsystem Self-Modus</h4>
                 </div>
             </div>
         </div>
@@ -62,7 +64,7 @@ require_once 'core/init.php';
                                 <td scope="row"> <?php echo $items['7']; ?> </td>
                                 <td scope="row">
 
-                                    <form method="post" action="borrowLibRecords.php">
+                                    <form method="post" action="selfBorrowRecords.php">
                                         <input type="label" name="buchID" class="form-control button d-none" id="" value="<?= $buchID ?>">
                                         <input type="submit" name="buchwahl" class="form-control button d-non" id="" value="Ausleihe">
                                     </form>
@@ -76,8 +78,6 @@ require_once 'core/init.php';
                                 <input type="label" name="signature" class="form-control button d-none" id="" value="<?= $signature ?>">
                                 <input type="submit" name="buchwahl" class="form-control button d-non" id="" value="Ausleihe">
                             </div>
-                            <!-- Adina odunc kitap alinacak personelin kullanici adinin girilmesi -->
-
                         </tbody>
                     </table>
                 </div>

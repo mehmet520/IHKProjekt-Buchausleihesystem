@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'themes/header.php';
+require_once 'themes/aheader.php';
 require_once 'core/init.php';
 
 if (!isset($_SESSION['isLogedIn']) && $_SESSION['isLogedIn'] === false) {

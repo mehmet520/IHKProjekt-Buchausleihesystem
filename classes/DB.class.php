@@ -7,6 +7,8 @@ class DB {
             $_query,            // last query
             $_results,          // results returned from query
             $_count = 0,        // number of results returned
+            $usernameGuest,
+            $username,
             $_error = false;
 
 // Constructor function; Creates PDO object and insert into DB Singleton Object.
@@ -22,6 +24,8 @@ class DB {
                                 PDO::ERRMODE_EXCEPTION);
             $this->_pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,  // Varsayilan Fetch modunu objekt olarak ayarlar.
                                     PDO::FETCH_BOTH); 
+            
+            // sil
             echo "connected<br>";
         } catch(PDOException $e) {
             die("Auf die Datenbank konnte nicht mit PDO zugegriffen werden.<br>"
@@ -70,6 +74,7 @@ class DB {
         }
     }
 
+
     public function getRow($query, $params = null)
     {
         //tek satır veri çekmek  için
@@ -79,7 +84,34 @@ class DB {
             die($e->getMessage());
         }
     }
+    public function insert($query, $params = null)
+    {
+        //kayıt eklemek için
+        try {
+            $this->myQuery($query, $params);
+            return $this->_pdo->lastInsertId();
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
 
+    public function update($query, $params = null)
+    {
+        //kayıt güncellemek için
+        try {
+            return $this->myQuery($query, $params)->rowCount();
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function delete($query, $params = null)
+    {
+        //kayıt Silmek için
+        return $this->update($query, $params);
+    }
+
+// sil
     public function query($sql, $params = array())
     {
         $this->_error = false;

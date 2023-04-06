@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'themes/header.php';
+require_once 'themes/aheader.php';
 require_once 'core/init.php';
 
 // Bu yorumu kaldir.
@@ -30,7 +30,7 @@ if (!isset($_SESSION['isLogedIn']) && $_SESSION['isLogedIn'] === false) {
                         <div class="col-sm-6">
                             <div class="d-grid gap-3 col-8 mx-auto">
                                 <a class="btn btn-success btn-lg px-4 gap-3" href="#" role="button">Self-Service-Modus</a>
-                                <a class="btn btn-info btn-lg px-4 gap-3" href="borrowSelf.php" role="button">Ausleihe</a>
+                                <a class="btn btn-info btn-lg px-4 gap-3" href="selfBorrow.php" role="button">Ausleihe</a>
                                 <a class="btn btn-secondary btn-lg px-4 gap-3" href="listRetExtSelf.php" role="button">Liste/Rückgabe/Verlängerung</a>
                             </div>
                         </div>
@@ -40,7 +40,7 @@ if (!isset($_SESSION['isLogedIn']) && $_SESSION['isLogedIn'] === false) {
                             <div class="d-grid gap-3 col-8 mx-auto">
                                 <a class="btn btn-warning btn-lg px-4 gap-3" href="#" role="button">Bibliothek-Modus</a>
                                 <a class="btn btn-info btn-lg px-4 gap-3" 
-                                    href="borrowLibRedi.php" 
+                                    href="entryGuestUsername.php" 
                                     role="button">Ausleihe</a>
                                 <a class="btn btn-secondary btn-lg px-4 gap-3" href="#" role="button">Liste/Rückgabe/Verlängerung</a>
                             </div>

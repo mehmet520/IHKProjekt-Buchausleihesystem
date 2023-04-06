@@ -1,8 +1,8 @@
 <?php
-require_once 'themes/header.php';
+require_once 'themes/aheader.php';
 require_once 'core/init.php';
-/* require_once $_SEVER["DOCUMENT_ROOT"].'IHK_PRJ/core/init.php';  // LOCAL Computer  Problem var.
-require_once $_SEVER["DOCUMENT_ROOT"].'/core/init.php';  // Uzk Server */
+// require_once $_SEVER["DOCUMENT_ROOT"].'/IHK_PRJ/core/init.php';  
+// require_once $_SEVER["DOCUMENT_ROOT"].'/core/init.php';  // Uzk Server
 
 ?>
 
@@ -35,7 +35,7 @@ require_once $_SEVER["DOCUMENT_ROOT"].'/core/init.php';  // Uzk Server */
     <main class="form-signin">
       <form method="post" action="<?php echo htmlspecialchars("result.php"); ?>">
         <img class="mb-4" src="images\001_university-of-cologne-logo-freelogovectors.net_-400x202.png" alt="" width="113" height="57" />
-        <h3 class="text-primary">Willkommen beim Buchausleihsystem!</h3>
+        <h3 class="text-primary text-center mb-5">Willkommen beim Buchausleihsystem!</h3>
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
         <div class="form-floating">
           <input type="text" class="form-control" id="username" name="username" placeholder="name@example.com" />
@@ -49,4 +49,6 @@ require_once $_SEVER["DOCUMENT_ROOT"].'/core/init.php';  // Uzk Server */
       </form>
     </main>
   </div>
+
+
   <?php require_once "themes/footer.php"; ?>

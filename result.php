@@ -2,16 +2,19 @@
 /* session_set_cookie_params($time,$path,$domain,$secure,$httpOnly); */
 session_set_cookie_params(60 * 60, '/', 'localhost', false, true); // Sunucuya yuklendikten sonra $secure true yapilmalidir.
 session_start();
+require_once 'themes/aheader.php';
 require_once 'core/init.php';
+
 
 /* Prüfen, ob eine Eingabe erfolgt ist */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo $username = $_POST['username'];
     echo $password = $_POST['password'];
-
+    $db= DB::getInstance();
+    $db->username=$username;
     // Hash kullan
     $sql = 'SELECT *  FROM benutzer WHERE benutzerName=? AND kontoPasswort = ? ';
-    $query = DB::getInstance()->getRow($sql, array($username , $password));
+    $query = $db->getRow($sql, array($username , $password));
     // foreach ($queryTable as $items) {
     print_r($query);
     echo $databaseUser = $query["benutzerName"];
@@ -43,3 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     Redirect::goTo('signin.php', 2);
     exit('<h2>Sie sind nicht berechtigt, diese Seite zu sehen!</h2>');
 }
+
+?>
+  <?php require_once "themes/footer.php"; ?>

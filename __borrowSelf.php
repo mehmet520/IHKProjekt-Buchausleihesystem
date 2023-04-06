@@ -1,5 +1,5 @@
 <?php
-require_once 'themes/header.php';
+require_once 'themes/aheader.php';
 require_once 'core/init.php';
 ?>
 
