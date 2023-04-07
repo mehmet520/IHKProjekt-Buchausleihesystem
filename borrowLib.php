@@ -3,8 +3,9 @@
 session_start();
 require_once 'themes/aheader.php';
 require_once 'core/init.php';
+echo $_SESSION['usernameGuest'] = $_POST['usernameGuest'];
 ?>
-<!-- Kitap listesi -->
+<!-- Sayfa listesi -->
 <div class=" container-fluid">
     <div class="row ">
         <div class=" col-md-8 offset-md-2 ">

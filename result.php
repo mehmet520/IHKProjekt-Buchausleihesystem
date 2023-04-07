@@ -11,11 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo $username = $_POST['username'];
     echo $password = $_POST['password'];
     $db= DB::getInstance();
-    $db->username=$username;
     // Hash kullan
     $sql = 'SELECT *  FROM benutzer WHERE benutzerName=? AND kontoPasswort = ? ';
     $query = $db->getRow($sql, array($username , $password));
-    // foreach ($queryTable as $items) {
     print_r($query);
     echo $databaseUser = $query["benutzerName"];
     echo $databasePass = $query["kontoPasswort"]; //202cb962ac59075b964b07152d234b70
@@ -38,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['username'] = $username;
             $_SESSION['sessionTime'] = time();
             echo '<h2>Basariyla giris yaptiniz. Yonlendiriliyorsunuz...</h2> <br>';
-            Redirect::goTo('profile.php', 1);
+            Redirect::goTo('profile.php', 4);
         }
     }
 } else {

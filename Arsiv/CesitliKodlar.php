@@ -36,28 +36,36 @@ $sql_buchStatus = "INSERT INTO ausleihe (ausleiherID, bearbeiterID, buchID)
 
 ?>
 
-    <?php
-    $usernameGuest;
-    $bookSignature;
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        echo $usernameGuest = $_POST['username'];
-        if (empty($usernameGuest)) {
-            echo '<div class="alert alert-danger text-center" role="alert">
+<?php
+$usernameGuest;
+$bookSignature;
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    echo $usernameGuest = $_POST['username'];
+    if (empty($usernameGuest)) {
+        echo '<div class="alert alert-danger text-center" role="alert">
                     <h3>
                         Bitte geben Sie keine leeren Daten in das Formular ein!
                     </h3>
                 </div> <br>';
-            Redirect::comeBack(2);
-        } else {
-            // echo $usernameGuest = $_POST['username'];    
-            Redirect::goTo('borrowLib.php', 1);
-        }
+        Redirect::comeBack(2);
+    } else {
+        // echo $usernameGuest = $_POST['username'];    
+        Redirect::goTo('borrowLib.php', 1);
     }
+}
 
 
 
 
-    $today = date("Y-m-d");
-    $newDate = strtotime('20 day', strtotime($today));
-    $newDate = date('d/m/Y', $newDate);
-    ?>
+$today = date("Y-m-d");
+$newDate = strtotime('20 day', strtotime($today));
+$newDate = date('d/m/Y', $newDate);
+
+
+if (array_key_exists('username', $_POST)) {
+    echo $_SESSION['usernameGuest'] = $_POST['username'];
+}
+?>
+
+
+?>

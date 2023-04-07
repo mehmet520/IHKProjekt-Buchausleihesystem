@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'themes/aheader.php';
 require_once 'core/init.php';
 require_once 'Sendpost.class.php';
 
@@ -19,14 +20,22 @@ echo $db->update ($sql_buchStatus);
 $sql_borrow = "INSERT INTO ausleihe (ausleiherID, bearbeiterID, buchID)
         VALUES(?, ?, ?);";
 echo $db->insert($sql_borrow, array($username, $username, $buchID));
-// Benutzer/Bearbeiter Email Address
+
+// Benutzer/Bearbeiter Email Addressini getirme
 $sql = "SELECT benutzerEmail FROM benutzer WHERE benutzerName=?;";
 $query_email = $db->getRow($sql, [$username]);
 $userEmail = $query_email['benutzerEmail'];
 
-$message = "Hukuk Fakultesi kutuphanesindan odunc kitap alma islemi gerceklestirdiniz.";
+// Email gonderme
+$message = "Sie haben von der Bibliothek der Rechtswissenschaftlichen Fakultät eine Ausleihe von Büchern erhalten.";
 sendPost($message, $userEmail);
+        echo '<div class="alert alert-success text-center" role="alert">
+                    <h3>
+                        Ihre Transaktion wurde bearbeitet. Sie werden jetzt geführt...
+                    </h3>
+                </div> <br>';
+        Redirect::goTo('profile.php', 4);
 }
-
+require_once 'themes/footer.php';
 ?>
 

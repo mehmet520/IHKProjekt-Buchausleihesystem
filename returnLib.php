@@ -3,6 +3,7 @@
 session_start();
 require_once 'themes/aheader.php';
 require_once 'core/init.php';
+echo $_SESSION['usernameGuest'] = $_POST['usernameGuest'];
 ?>
 <!-- Sayfa basligi -->
 <div class=" container-fluid">
@@ -62,7 +63,7 @@ require_once 'core/init.php';
                                 <td scope="row"> <?php echo $items['6']; ?> </td>
                                 <td scope="row"> <?php echo $items['7']; ?> </td>
                                 <td scope="row">
-                                    <form method="post" action="returnSelfRecords.php">
+                                    <form method="post" action="returnLibRecords.php">
                                         <input type="label" name="buchID" class="form-control button d-none " id="" value="<?= $buchID ?>">
                                         <input type="submit" name="selection" class="form-control button d-non " id="" value="Return">
                                         <input type="submit" name="selection" class="form-control button d-non" id="" value="Extend">

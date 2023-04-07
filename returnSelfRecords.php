@@ -1,6 +1,8 @@
 <?php
 session_start();
+require_once 'themes/aheader.php';
 require_once 'core/init.php';
+require_once 'Sendpost.class.php';
 
 /* Prüfen, ob eine Eingabe erfolgt ist */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -29,7 +31,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo $db->update($sql_buchStatus);
         }
 
+        // Benutzer/Bearbeiter Email Addressini getirme
+        $sql = "SELECT benutzerEmail FROM benutzer WHERE benutzerName=?;";
+        $query_email = $db->getRow($sql, [$username]);
+        $userEmail = $query_email['benutzerEmail'];
+        // E-Mail-Versand
+        $message = "Sie haben eine Buchrückgabe oder Buchverlängerung an die Bibliothek der Rechtswissenschaftlichen Fakultät vorgenommen.";
+        sendPost($message, $userEmail);
+        /* Profil sayfasina yonlendirme */
+        echo '<div class="alert alert-success text-center" role="alert">
+                    <h3>
+                        Ihre Transaktion wurde bearbeitet. Sie werden jetzt geführt...
+                    </h3>
+                </div> <br>';
+        Redirect::goTo('profile', 4);
 }
 
+require_once 'themes/footer.php';
 ?>
 

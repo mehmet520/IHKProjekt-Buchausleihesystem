@@ -2,7 +2,6 @@
 Bibliothek-Modu ; Borrow Book-->
 <?php
 session_start();
-
 require_once $_SERVER["DOCUMENT_ROOT"] . "/IHK_PRJ/themes/aheader.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/IHK_PRJ/core/init.php";
 ?>
@@ -19,11 +18,11 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/IHK_PRJ/core/init.php";
                             <h1 class="h5 mb-5 mt-5 fw-normal">Bitte geben Sie den Benutzernamen des Mitarbeiters ein, den Sie buchen möchten.</h1>
                             <div class="form-floating h5 mb-5 fw-normal">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" name="username" placeholder="name@example.com" />
+                                    <input type="text" class="form-control" name="usernameGuest" placeholder="name@example.com" />
                                     <label for="floatingInput">Benutzernahme</label>
                                 </div>
-
                                 <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Einreichen</button>
+                            </div>
                         </form>
 
                     </div>
@@ -31,11 +30,5 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/IHK_PRJ/core/init.php";
             </div>
         </div>
     </div>
-
-    <?php
-    if (array_key_exists('username', $_POST)) {
-        echo $_SESSION['usernameGuest'] = $_POST['username'];
-    }
-    ?>
 
     <?php require_once 'themes/footer.php'; ?>
