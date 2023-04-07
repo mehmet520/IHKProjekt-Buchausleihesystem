@@ -1,4 +1,5 @@
-<!-- Adina odunc kitap alinacak, personelin kullanici adinin girilmesi -->
+<!-- Adina islem yapilacak, personelin kullanici adinin girilmesi 
+Bibliothek-Modu ; Borrow Book-->
 <?php
 session_start();
 

@@ -25,11 +25,7 @@ $sqlGuestId = "SELECT benutzerID FROM benutzer WHERE benutzerName = $usernameGue
 $ausleiherID = $db->getRows($sqlGuestId);
 print_r($ausleiherID);
 
-
 echo $bookSignature = $db->username;
-
-
-
 
 $sql_buchStatus = "UPDATE buecher SET buchStatusID=2
         WHERE signatur= $bookSignature; ";
@@ -57,8 +53,11 @@ $sql_buchStatus = "INSERT INTO ausleihe (ausleiherID, bearbeiterID, buchID)
             Redirect::goTo('borrowLib.php', 1);
         }
     }
-    function ausleihe()
-    {
-        print_r($_POST);
-    }
+
+
+
+
+    $today = date("Y-m-d");
+    $newDate = strtotime('20 day', strtotime($today));
+    $newDate = date('d/m/Y', $newDate);
     ?>

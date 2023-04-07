@@ -1,17 +1,18 @@
-<!-- Kitap Odunc Alma Self-Modus -->
+<!-- Kitaplari listeleme, iade etme ve surelerini uzatma Self-Modus -->
 <?php
+session_start();
 require_once 'themes/aheader.php';
 require_once 'core/init.php';
 ?>
-<!-- Kitap listesi -->
+<!-- Sayfa basligi -->
 <div class=" container-fluid">
     <div class="row ">
         <div class=" col-md-8 offset-md-2 ">
             <div class="card  mt-3 bg-light">
                 <div class="card-body ">
                     <img class="mb-4 rounded mx-auto d-block" src="images\001_university-of-cologne-logo-freelogovectors.net_-400x202.png" alt="" width="113" height="57" />
-                    <h4 class="text-primary text-center mb-5">Buchausleihsystem Self-Modus</h4>
-                    <h5 class="text-primary text-center mb-5">Modul für die Buchausleihe</h5>
+                    <h3 class="text-primary text-center mb-5">Buchausleihsystem Self-Modus</h3>
+                    <h5 class="text-primary text-center mb-5">Auflistung, Rückgabe und Verlängerung von Büchern</h5>
                 </div>
             </div>
         </div>
@@ -29,23 +30,21 @@ require_once 'core/init.php';
                                 <th scope="col">Buchtitle</th>
                                 <th scope="col">Autorenname</th>
                                 <th scope="col">Autorennahcname</th>
-                                <th scope="col">Bibliothekname</th>
-                                <th scope="col">Buchstandort</th>
+                                <th scope="col">Institut</th>
                                 <th scope="col">Transaction</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
+                            echo $username = $_SESSION['username'];
                             $db = DB::getInstance();
-                            $sql = "SELECT benutzerName, buchID, signatur, buchTitel, autorVorname, autorNachname, bibliothekName, standortBezeichnung
-                                            FROM buecher bu
-                                            INNER JOIN bibliotheken bi USING(bibliothekID)
-                                            INNER JOIN standorte st USING(bibliothekID)
-                                            INNER JOIN ausleihe au USING (buchID)
+                            $sql = "SELECT benutzerName, buchID, signatur, buchTitel, autorVorname, autorNachname, einrichtungBezeichnung
+                                            FROM ausleihe au
+                                            INNER JOIN buecher bu USING (buchID)
                                             INNER JOIN benutzer be ON be.benutzerID=au.ausleiherID
-                                            INNER JOIN buchStatus bus USING (buchStatusID)
-                                            WHERE buchStatusID=2;";
-                            $queryTable = $db->tableOperations($sql, PDO::FETCH_BOTH);
+                                            INNER JOIN einrichtungen ei USING(einrichtungID)
+                                            WHERE benutzerName=?;";
+                            $queryTable = $db->getRows($sql, [$username]);
                             // $buchIdArray = [];
                             // $counter = -1;
                             foreach ($queryTable as $items) {
@@ -58,14 +57,12 @@ require_once 'core/init.php';
                                 <td scope="row"> <?php echo $items['4']; ?> </td>
                                 <td scope="row"> <?php echo $items['5']; ?> </td>
                                 <td scope="row"> <?php echo $items['6']; ?> </td>
-                                <td scope="row"> <?php echo $items['7']; ?> </td>
                                 <td scope="row">
-
-                                    <form method="post" action="selfBorrowRecords.php">
+                                    <form method="post" action="returnSelfRecords.php">
                                         <input type="label" name="buchID" class="form-control button d-none" id="" value="<?= $buchID ?>">
-                                        <input type="submit" name="buchwahl" class="form-control button d-non" id="" value="Ausleihe">
+                                        <input type="submit" name="selection" class="form-control button d-non " id="" value="Return">
+                                        <input type="submit" name="selection" class="form-control button d-non" id="" value="Extend">
                                     </form>
-
                                 </td>
                                 </tr>
                             <?php
@@ -78,7 +75,5 @@ require_once 'core/init.php';
         </div>
     </div>
 </div>
-
-
 
 <?php require_once 'themes/footer.php'; ?>

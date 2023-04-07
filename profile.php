@@ -31,7 +31,7 @@ if (!isset($_SESSION['isLogedIn']) && $_SESSION['isLogedIn'] === false) {
                             <div class="d-grid gap-3 col-8 mx-auto">
                                 <a class="btn btn-success btn-lg px-4 gap-3" href="#" role="button">Self-Service-Modus</a>
                                 <a class="btn btn-info btn-lg px-4 gap-3" href="selfBorrow.php" role="button">Ausleihe</a>
-                                <a class="btn btn-secondary btn-lg px-4 gap-3" href="listRetExtSelf.php" role="button">Liste/Rückgabe/Verlängerung</a>
+                                <a class="btn btn-secondary btn-lg px-4 gap-3" href="returnSelf.php" role="button">Liste/Rückgabe/Verlängerung</a>
                             </div>
                         </div>
                         <!-- Bibliothek-Modus -->
@@ -39,10 +39,8 @@ if (!isset($_SESSION['isLogedIn']) && $_SESSION['isLogedIn'] === false) {
                         <div class="col-sm-6">
                             <div class="d-grid gap-3 col-8 mx-auto">
                                 <a class="btn btn-warning btn-lg px-4 gap-3" href="#" role="button">Bibliothek-Modus</a>
-                                <a class="btn btn-info btn-lg px-4 gap-3" 
-                                    href="entryGuestUsername.php" 
-                                    role="button">Ausleihe</a>
-                                <a class="btn btn-secondary btn-lg px-4 gap-3" href="#" role="button">Liste/Rückgabe/Verlängerung</a>
+                                <a class="btn btn-info btn-lg px-4 gap-3" href="entryGuestUnameBorrLib.php" role="button">Ausleihe</a>
+                                <a class="btn btn-secondary btn-lg px-4 gap-3" href="entryGuestUnameRetLib.php" role="button">Liste/Rückgabe/Verlängerung</a>
                             </div>
                         </div>
                     </div>
@@ -60,6 +58,6 @@ if (!isset($_SESSION['isLogedIn']) && $_SESSION['isLogedIn'] === false) {
             </div>
             </div>
         </main>
-        <?php require_once 'themes/footer.php'; 
+    <?php require_once 'themes/footer.php';
 }
-        ?>
+    ?>
