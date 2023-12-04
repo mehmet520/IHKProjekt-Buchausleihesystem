@@ -10,8 +10,8 @@ class Hash {
 	}
 
 }
-// echo hash('sha256', '1' ) . "<br>";
-// echo hash('sha256', '2_kontoPasswort' ) . "<br>";
+// echo hash('sha256', '1' ) . "<br>";					user name: 1_benutzerName
+// echo hash('sha256', '2_kontoPasswort' ) . "<br>";	user name: 2_benutzerName
 // echo hash('sha256', '3_kontoPasswort' ) . "<br>";
 // echo hash('sha256', '4_kontoPasswort' ) . "<br>";
 // echo hash('sha256', '5_kontoPasswort' ) . "<br>";
