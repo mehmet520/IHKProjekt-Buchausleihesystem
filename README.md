@@ -5,7 +5,7 @@ user name: 1_benutzerName ;  password: 1
 user name: 2_benutzerName;   password: 2_kontoPasswort
 
 Die Datenbankinformationen sollten in der Datei core/init.php gespeichert werden.
-Und die Datenbank sollte mit der Datei "bibliothek Veri Tabanı 230411 1900 Test Verileri dahil tamamı.sql" erstellt werden.
+Und die Datenbank sollte mit der Datei "bibliothekDatabase.sql" erstellt werden.
 
 Das Programm beginnt mit der Ausführung der Datei signin.php.
 
