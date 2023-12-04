@@ -8,7 +8,7 @@
             "name": "Launch Chrome",
             "request": "launch",
             "type": "chrome",
-            "url": "http://localhost:80/IHK_PRJ",
+            "url": "http://localhost:80/Buchausleihesystem 230411",
             "webRoot": "${workspaceFolder}"
         },
         {

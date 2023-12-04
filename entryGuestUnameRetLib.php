@@ -1,10 +1,14 @@
-<!-- Adina islem yapilacak, personelin kullanici adinin girilmesi 
+<!-- Eingabe des Benutzernamens des Personals, in dessen Namen die Transaktion durchgeführt werden soll 
 Bibliothek-Modu ; Return Book-->
 
 <?php
 session_start();
-require_once $_SERVER["DOCUMENT_ROOT"] . "/IHK_PRJ/themes/aheader.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/IHK_PRJ/core/init.php";
+require_once 'themes/aheader.php';
+require_once 'core/init.php';
+
+echo $_SESSION['selection'] = $_POST['selection'];
+echo $_SESSION['buchID'] = $_POST['buchID'];
+
 ?>
 
 <body>
@@ -13,7 +17,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/IHK_PRJ/core/init.php";
             <div class=" col-md-6 offset-md-3 ">
                 <div class="card  mt-3 bg-light">
                     <div class="card-body ">
-                        <form method="post" action="returnLib.php">
+                        <form method="post" action="returnLibRecords.php">
                             <img class="mb-4 rounded mx-auto d-block" src="images\001_university-of-cologne-logo-freelogovectors.net_-400x202.png" alt="" width="113" height="57" />
                             <h4 class="text-primary text-center mb-5">Buchausleihsystem Bibliothek-Modus</h4>
                             <h1 class="h5 mb-5 mt-5 fw-normal">Bitte geben Sie den Benutzernamen des Mitarbeiters ein, für den Sie den Vorgang bearbeiten möchten.</h1>

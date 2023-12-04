@@ -1,10 +1,10 @@
 <?php 
 class DB {
     private static $PDO_obj = null;   // Singleton instance of DB Class 
-    public $_pdo,              // SQL connection cursor object
-            $_query,            // last query
-            $_results,          // results returned from query
-            $_count = 0,        // number of results returned
+    public $_pdo,                    // SQL connection cursor object
+            $_query,                // last query
+            $_results,               // results returned from query
+            $_count = 0,            // number of results returned
             $usernameGuest,
             $username,
             $_error = false;
@@ -17,13 +17,11 @@ class DB {
             $this->_pdo = new PDO($host_DB,
                                 Config::get('mysql/username'), 
                                 Config::get('mysql/password'));
-            $this->_pdo->setAttribute(PDO::ATTR_ERRMODE, // Hatalari ekrana yazar.
+            $this->_pdo->setAttribute(PDO::ATTR_ERRMODE,            // Schreibt Fehler auf den Bildschirm.
                                 PDO::ERRMODE_EXCEPTION);
-            $this->_pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,  // Varsayilan Fetch modunu objekt olarak ayarlar.
+            $this->_pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,  // Setzt den Standard-Fetch-Modus auf Objekt.
                                     PDO::FETCH_BOTH); 
-            
-            // sil
-            echo "connected<br>";
+            // echo "connected<br>";
         } catch(PDOException $e) {
             die("Auf die Datenbank konnte nicht mit PDO zugegriffen werden.<br>"
                 .$e->getMessage());
@@ -36,16 +34,14 @@ class DB {
         }
         return self::$PDO_obj;
     }
-
     public function tableOperations($qeury, $myFetchMode){
         // exec
         $this->_query = $this->_pdo->query($qeury, $myFetchMode);
         return $this->_query;
     }
-
     private function myQuery($query, $params = null)
     {
-        //diğer metodlardaki tekrarlı verileri bitirmek için kullanılan metod
+        //die Methode, mit der sich wiederholende Daten in anderen Methoden beendet werden
         if (is_null($params)) {
             $this->_query = $this->_pdo->query($query);
         } else {
@@ -56,7 +52,7 @@ class DB {
     }
     public function getRows($query, $params = null)
     {
-        //çoklu satır verilerini çekmek için
+        //zum Abrufen mehrzeiliger Daten
         try {
             return $this->myQuery($query, $params)->fetchAll();
         } catch (PDOException $e) {
@@ -65,16 +61,25 @@ class DB {
     }
     public function getRow($query, $params = null)
     {
-        //tek satır veri çekmek  için
+        //um eine einzelne Datenzeile zu ziehen
         try {
             return $this->myQuery($query, $params)->fetch();
         } catch (PDOException $e) {
             die($e->getMessage());
         }
     }
+    public function getColumn($query, $params = null)
+    {
+        //Punktdatenabruf zum Abruf von Spaltendaten einer einzelnen Zeile
+        try {
+            return $this->myQuery($query, $params)->fetchColumn();
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
     public function insert($query, $params = null)
     {
-        //kayıt eklemek için
+        //um einen Datensatz hinzuzufügen
         try {
             $this->myQuery($query, $params);
             return $this->_pdo->lastInsertId();
@@ -82,25 +87,17 @@ class DB {
             die($e->getMessage());
         }
     }
-
     public function update($query, $params = null)
     {
-        //kayıt güncellemek için
+        //zur Aktualisierung des Registers
         try {
             return $this->myQuery($query, $params)->rowCount();
         } catch (PDOException $e) {
             die($e->getMessage());
         }
     }
-    public function delete($query, $params = null)
-    {
-        //kayıt Silmek için
-        return $this->update($query, $params);
-    }
 
- 
-   
-// Veritabani baglantisini kapatir.
+// Schaltet die Datenbankverbindung aus.
     public function __destruction() {
         
         $this->_pdo = NULL;

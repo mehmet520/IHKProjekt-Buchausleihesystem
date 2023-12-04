@@ -1,11 +1,10 @@
-<!-- Kitaplari listeleme, iade etme ve surelerini uzatma Bibliothek-Modus -->
+<!-- Auflistung, Rückgabe und Verlängerung von Büchern Bibliothek-Modus -->
 <?php
 session_start();
 require_once 'themes/aheader.php';
 require_once 'core/init.php';
-echo $_SESSION['usernameGuest'] = $_POST['usernameGuest'];
 ?>
-<!-- Sayfa basligi -->
+<!-- Titel der Seite -->
 <div class=" container-fluid">
     <div class="row ">
         <div class=" col-md-8 offset-md-2 ">
@@ -19,7 +18,7 @@ echo $_SESSION['usernameGuest'] = $_POST['usernameGuest'];
         </div>
     </div>
 
-    <!-- Kitap listesi -->
+    <!-- Bücherliste -->
     <div class=" container-fluid">
         <div class="row ">
             <div class=" col ">
@@ -41,18 +40,25 @@ echo $_SESSION['usernameGuest'] = $_POST['usernameGuest'];
                             <?php
                             echo $username = $_SESSION['username'];
                             $db = DB::getInstance();
-                            $sql = "SELECT benutzerName, buchID, signatur, buchTitel, autorVorname, autorNachname, einrichtungBezeichnung, rueckgabeDatum
+                            // Library ID of Book
+                            $sqlBuchBibl = "SELECT  bibliothekID
+                                            FROM  buecher bu                                             
+                                            INNER JOIN standorte st USING(standortID)
+                                            INNER JOIN bibliotheken bi USING(bibliothekID)
+                                            WHERE buchID=?;";
+                            // Buchliste
+                            $sql =
+                            "SELECT benutzerName, buchID, signatur, buchTitel, autorVorname, autorNachname, einrichtungBezeichnung, rueckgabeDatum
                                             FROM ausleihe au
                                             INNER JOIN buecher bu USING (buchID)
                                             INNER JOIN benutzer be ON be.benutzerID=au.ausleiherID
                                             INNER JOIN einrichtungen ei USING(einrichtungID)
-                                            ;";
-                            $queryTable = $db->getRows($sql);
-                            // $buchIdArray = [];
-                            // $counter = -1;
+                                            WHERE buchStatusID=? AND ausleiheStatusID !='5' AND ausleiheStatusID !='4' ;";     // buchStatus-> 1:'vorhanden', 2:'ausgelieht', 3:'vermisst', 4:'gloescht'
+                            $queryTable = $db->getRows($sql, [2]);
                             foreach ($queryTable as $items) {
                                 $buchID = $items['1'];
-                                // array_push($buchIdArray, $signature);
+                                $queryTable1 = $db->getRow($sqlBuchBibl, [$buchID]);
+                                $bookLib = $queryTable1['bibliothekID'];
                             ?>
                                 <!-- 0-> benutzerNahme  1-> buchID -->
                                 <td scope="row"> <?php echo $items['0']; ?> </td>
@@ -63,10 +69,13 @@ echo $_SESSION['usernameGuest'] = $_POST['usernameGuest'];
                                 <td scope="row"> <?php echo $items['6']; ?> </td>
                                 <td scope="row"> <?php echo $items['7']; ?> </td>
                                 <td scope="row">
-                                    <form method="post" action="returnLibRecords.php">
+                                    <form method="post" action="entryGuestUnameRetLib.php">
                                         <input type="label" name="buchID" class="form-control button d-none " id="" value="<?= $buchID ?>">
-                                        <input type="submit" name="selection" class="form-control button d-non " id="" value="Return">
-                                        <input type="submit" name="selection" class="form-control button d-non" id="" value="Extend">
+                                        <?php if ($bookLib == $_SESSION['library']) {
+                                            echo '<input type="submit" name="selection" class="form-control button d-non " id="" value="Return">';
+                                            echo '<input type="submit" name="selection" class="form-control button d-non" id="" value="Extend">';
+                                        }
+                                        ?>
                                     </form>
                                 </td>
                                 </tr>

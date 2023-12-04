@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 05. Apr 2023 um 13:40
+-- Erstellungszeit: 11. Apr 2023 um 18:45
 -- Server-Version: 10.4.27-MariaDB
 -- PHP-Version: 8.1.12
 
@@ -30,23 +30,45 @@ SET time_zone = "+00:00";
 CREATE TABLE `ausleihe` (
   `ausleheID` int(8) UNSIGNED NOT NULL,
   `ausleiherID` int(6) UNSIGNED NOT NULL,
-  `ausleiheDatum` datetime NOT NULL DEFAULT current_timestamp(),
-  `rueckgabeDatum` datetime NOT NULL DEFAULT current_timestamp(),
-  `ausleiheStatus` varchar(30) NOT NULL DEFAULT 'in Ordnung',
+  `ausleiheDatum` date NOT NULL DEFAULT curdate(),
+  `rueckgabeDatum` date NOT NULL,
+  `ausleiheStatusID` int(2) UNSIGNED NOT NULL DEFAULT 1,
   `bemerkung` text DEFAULT NULL,
   `bearbeiterID` int(6) UNSIGNED NOT NULL,
   `buchID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Daten für Tabelle `ausleihe`
+-- Trigger `ausleihe`
+--
+DELIMITER $$
+CREATE TRIGGER `rueckgabeDatum_trigger` BEFORE INSERT ON `ausleihe` FOR EACH ROW SET
+--    NEW.ausleiheDatum = IFNULL(NEW.ausleiheDatum, NOW()),
+    NEW.rueckgabeDatum = IFNULL(NEW.rueckgabeDatum, TIMESTAMPADD(DAY, 14, NOW()))
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `ausleihestatus`
 --
 
-INSERT INTO `ausleihe` (`ausleheID`, `ausleiherID`, `ausleiheDatum`, `rueckgabeDatum`, `ausleiheStatus`, `bemerkung`, `bearbeiterID`, `buchID`) VALUES
-(1, 1, '2022-10-02 00:00:00', '2022-10-16 00:00:00', 'in Ordnung', NULL, 3, 1),
-(2, 3, '2022-06-02 00:00:00', '2022-06-21 00:00:00', 'in Ordnung', NULL, 4, 2),
-(3, 4, '2023-02-02 00:00:00', '0000-00-00 00:00:00', '2.Mahnung', NULL, 3, 4),
-(4, 2, '2023-03-22 00:00:00', '0000-00-00 00:00:00', 'verzögert', NULL, 3, 3);
+CREATE TABLE `ausleihestatus` (
+  `ausleiheStatusID` int(2) UNSIGNED NOT NULL,
+  `ausleiheStatus` varchar(30) NOT NULL DEFAULT 'in Ordnung' CHECK (`ausleiheStatus` in ('in Ordnung','1.Mahnung','2.Mahnung','gloescht','zurueckgegeben'))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `ausleihestatus`
+--
+
+INSERT INTO `ausleihestatus` (`ausleiheStatusID`, `ausleiheStatus`) VALUES
+(1, 'in Ordnung'),
+(2, '1.Mahnung'),
+(3, '2.Mahnung'),
+(4, 'gloescht'),
+(5, 'zurueckgegeben');
 
 -- --------------------------------------------------------
 
@@ -70,11 +92,11 @@ CREATE TABLE `benutzer` (
 --
 
 INSERT INTO `benutzer` (`benutzerID`, `benutzerName`, `benutzerVorname`, `benutzerNachName`, `kontoPasswort`, `benutzerEmail`, `benutzerStatusID`, `einrichtungID`) VALUES
-(1, '1_benutzerName', '1_benutzerVorname', '1_benutzerNachName', '1_kontoPasswort', '1_email@e.com', 1, 1),
-(2, '2_benutzerName', '2_benutzerVorname', '2_benutzerNachName', '2_kontoPasswort', '2_email@e.com', 2, 2),
-(3, '3_benutzerName', '3_benutzerVorname', '3_benutzerNachName', '3_kontoPasswort', '3_email@e.com', 3, 3),
-(4, '4_benutzerName', '4_benutzerVorname', '4_benutzerNachName', '4_kontoPasswort', '4_email@e.com', 4, 4),
-(5, '5_benutzerName', '5_benutzerVorname', '5_benutzerNachName', '5_kontoPasswort', '5_email@e.com', 3, 1);
+(1, '1_benutzerName', '1_benutzerVorname', '1_benutzerNachName', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', '1_email@e.com', 1, 14), -- kontoPasswort: 1
+(2, '2_benutzerName', '2_benutzerVorname', '2_benutzerNachName', '14599a81b0f8047e7d2ac8798768028481650812383e0b8d97dbfbdfb30363fc', '2_email@e.com', 2, 14), -- kontoPasswort: 2_kontoPasswort
+(3, '3_benutzerName', '3_benutzerVorname', '3_benutzerNachName', '4295aa956c75cfdf014783e54dc8dac0b3a46eca33fe4e96cbd66dabd24c6495', '3_email@e.com', 3, 14), -- kontoPasswort: 3_kontoPasswort
+(4, '4_benutzerName', '4_benutzerVorname', '4_benutzerNachName', '4c4787320a09cf35b66e31bdf275294c4f209610f48c860452f9f008ab572f73', '4_email@e.com', 4, 15), -- kontoPasswort: 4_kontoPasswort
+(5, '5_benutzerName', '5_benutzerVorname', '5_benutzerNachName', '73c60ab1b64bccd39458ac0cffb3366c312ddef398121eff76a41f4728a99399', '5_email@e.com', 3, 15); -- kontoPasswort: 5_kontoPasswort
 
 -- --------------------------------------------------------
 
@@ -197,19 +219,26 @@ CREATE TABLE `buecher` (
   `autorNachname` varchar(30) DEFAULT NULL,
   `buchAusleiheZahl` int(11) DEFAULT NULL,
   `buchStatusID` int(2) UNSIGNED DEFAULT NULL,
-  `bibliothekID` int(4) UNSIGNED DEFAULT NULL
+  `standortID` int(4) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Daten für Tabelle `buecher`
 --
 
-INSERT INTO `buecher` (`buchID`, `signatur`, `buchTitel`, `autorVorname`, `autorNachname`, `buchAusleiheZahl`, `buchStatusID`, `bibliothekID`) VALUES
-(1, '1_signatur', '1_buchTitel', '1_autorVorname', '1_autorNachname', 11, 1, 1),
-(2, '2_signatur', '2_buchTitel', '2_autorVorname', '2_autorNachname', 5, 2, 2),
-(3, '3_signatur', '3_buchTitel', '3_autorVorname', '3_autorNachname', 15, 2, 3),
-(4, '4_signatur', '4_buchTitel', '4_autorVorname', '4_autorNachname', 22, 3, 20),
-(5, '5_signatur', '5_buchTitel', '5_autorVorname', '5_autorNachname', 5, 4, 11);
+INSERT INTO `buecher` (`buchID`, `signatur`, `buchTitel`, `autorVorname`, `autorNachname`, `buchAusleiheZahl`, `buchStatusID`, `standortID`) VALUES
+(1, '1_signatur', '1_buchTitel', '1_autorVorname', '1_autorNachname', 1, 1, 1),
+(2, '2_signatur', '2_buchTitel', '2_autorVorname', '2_autorNachname', 1, 1, 1),
+(3, '3_signatur', '3_buchTitel', '3_autorVorname', '3_autorNachname', 1, 1, 1),
+(4, '4_signatur', '4_buchTitel', '4_autorVorname', '4_autorNachname', 1, 1, 2),
+(5, '5_signatur', '5_buchTitel', '5_autorVorname', '5_autorNachname', 1, 1, 2),
+(6, '6_signatur', '6_buchTitel', '6_autorVorname', '6_autorNachname', 1, 1, 2),
+(7, '7_signatur', '7_buchTitel', '7_autorVorname', '7_autorNachname', 1, 1, 3),
+(8, '8_signatur', '8_buchTitel', '8_autorVorname', '8_autorNachname', 1, 1, 3),
+(9, '9_signatur', '9_buchTitel', '9_autorVorname', '9_autorNachname', 1, 1, 3),
+(10, '10_signatur', '10_buchTitel', '10_autorVorname', '10_autorNachname', 1, 1, 4),
+(11, '11_signatur', '11_buchTitel', '11_autorVorname', '11_autorNachname', 1, 1, 4),
+(12, '12_signatur', '12_buchTitel', '12_autorVorname', '12_autorNachname', 1, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -340,7 +369,15 @@ INSERT INTO `standorte` (`standortID`, `standortBezeichnung`, `bibliothekID`) VA
 ALTER TABLE `ausleihe`
   ADD PRIMARY KEY (`ausleheID`),
   ADD KEY `fk_ausleihe_buch` (`buchID`),
-  ADD KEY `fk_auleiheBearbeiter_benutzer` (`ausleiherID`);
+  ADD KEY `fk_ausleihe_benutzerAusleiher` (`ausleiherID`),
+  ADD KEY `fk_ausleihe_benutzerBearbeiter` (`bearbeiterID`),
+  ADD KEY `fk_ausleihe_ausleiheStatus` (`ausleiheStatusID`);
+
+--
+-- Indizes für die Tabelle `ausleihestatus`
+--
+ALTER TABLE `ausleihestatus`
+  ADD PRIMARY KEY (`ausleiheStatusID`);
 
 --
 -- Indizes für die Tabelle `benutzer`
@@ -385,7 +422,7 @@ ALTER TABLE `buecher`
   ADD UNIQUE KEY `signatur` (`signatur`),
   ADD KEY `signatur_2` (`signatur`),
   ADD KEY `buchTitel` (`buchTitel`),
-  ADD KEY `fk_buecher_bibliothek` (`bibliothekID`),
+  ADD KEY `fk_buch_standort` (`standortID`),
   ADD KEY `fk_buch_buchStatus` (`buchStatusID`);
 
 --
@@ -394,7 +431,7 @@ ALTER TABLE `buecher`
 ALTER TABLE `einrichtungen`
   ADD PRIMARY KEY (`einrichtungID`),
   ADD UNIQUE KEY `kostenstelleNummer` (`kostenstelleNummer`),
-  ADD KEY `fk_einrichtung_bibliothek` (`bibliothekID`);
+  ADD KEY `fk_einrichtungen_bibliotheken` (`bibliothekID`);
 
 --
 -- Indizes für die Tabelle `standorte`
@@ -412,7 +449,7 @@ ALTER TABLE `standorte`
 -- AUTO_INCREMENT für Tabelle `ausleihe`
 --
 ALTER TABLE `ausleihe`
-  MODIFY `ausleheID` int(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ausleheID` int(8) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `benutzer`
@@ -448,7 +485,7 @@ ALTER TABLE `buchstatusaenderung`
 -- AUTO_INCREMENT für Tabelle `buecher`
 --
 ALTER TABLE `buecher`
-  MODIFY `buchID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `buchID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT für Tabelle `einrichtungen`
@@ -470,7 +507,9 @@ ALTER TABLE `standorte`
 -- Constraints der Tabelle `ausleihe`
 --
 ALTER TABLE `ausleihe`
-  ADD CONSTRAINT `fk_auleiheBearbeiter_benutzer` FOREIGN KEY (`ausleiherID`) REFERENCES `benutzer` (`benutzerID`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ausleihe_ausleiheStatus` FOREIGN KEY (`ausleiheStatusID`) REFERENCES `ausleihestatus` (`ausleiheStatusID`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ausleihe_benutzerAusleiher` FOREIGN KEY (`ausleiherID`) REFERENCES `benutzer` (`benutzerID`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ausleihe_benutzerBearbeiter` FOREIGN KEY (`bearbeiterID`) REFERENCES `benutzer` (`benutzerID`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_ausleihe_buch` FOREIGN KEY (`buchID`) REFERENCES `buecher` (`buchID`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
@@ -492,13 +531,13 @@ ALTER TABLE `buchstatusaenderung`
 --
 ALTER TABLE `buecher`
   ADD CONSTRAINT `fk_buch_buchStatus` FOREIGN KEY (`buchStatusID`) REFERENCES `buchstatus` (`buchStatusID`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_buecher_bibliothek` FOREIGN KEY (`bibliothekID`) REFERENCES `bibliotheken` (`bibliothekID`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_buch_standort` FOREIGN KEY (`standortID`) REFERENCES `standorte` (`standortID`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints der Tabelle `einrichtungen`
 --
 ALTER TABLE `einrichtungen`
-  ADD CONSTRAINT `fk_einrichtung_bibliothek` FOREIGN KEY (`bibliothekID`) REFERENCES `bibliotheken` (`bibliothekID`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_einrichtungen_bibliotheken` FOREIGN KEY (`bibliothekID`) REFERENCES `bibliotheken` (`bibliothekID`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints der Tabelle `standorte`

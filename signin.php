@@ -17,13 +17,6 @@ require_once 'core/init.php';
     <nav class="navbar navbar-light bg-light ">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <!-- <img
-            src="/docs/5.1/assets/brand/bootstrap-logo.svg"
-            alt=""
-            width="30"
-            height="24"
-            class="d-inline-block align-text-top "
-          /> -->
           Rechtwissenschaftliche Fakültät Interne-Buchausleihe-System
         </a>
       </div>
@@ -36,7 +29,7 @@ require_once 'core/init.php';
       <form method="post" action="<?php echo htmlspecialchars("result.php"); ?>">
         <img class="mb-4" src="images\001_university-of-cologne-logo-freelogovectors.net_-400x202.png" alt="" width="113" height="57" />
         <h3 class="text-primary text-center mb-5">Willkommen beim Buchausleihsystem!</h3>
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+        <h1 class="h3 mb-3 fw-normal">Bitte melden Sie sich an</h1>
         <div class="form-floating">
           <input type="text" class="form-control" id="username" name="username" placeholder="name@example.com" />
           <label for="floatingInput">Benutzernahme</label>

@@ -1,9 +1,9 @@
-<!-- Adina islem yapilacak, personelin kullanici adinin girilmesi 
+<!-- Eingabe des Benutzernamens des Personals, in dessen Namen die Transaktion durchgeführt werden soll 
 Bibliothek-Modu ; Borrow Book-->
 <?php
 session_start();
-require_once $_SERVER["DOCUMENT_ROOT"] . "/IHK_PRJ/themes/aheader.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/IHK_PRJ/core/init.php";
+require_once 'themes/aheader.php';
+require_once 'core/init.php';
 ?>
 
 <body>

@@ -1,9 +1,9 @@
-<!-- Kitap Odunc Alma Self-Modus -->
+<!-- Buchausleihe Self-Modus -->
 <?php
+session_start();
 require_once 'themes/aheader.php';
 require_once 'core/init.php';
 ?>
-<!-- Kitap listesi -->
 <div class=" container-fluid">
     <div class="row ">
         <div class=" col-md-8 offset-md-2 ">
@@ -17,7 +17,7 @@ require_once 'core/init.php';
         </div>
     </div>
 
-    <!-- Kitap listesi -->
+<!-- Bücherliste -->
     <div class=" container-fluid">
         <div class="row ">
             <div class=" col ">
@@ -36,34 +36,40 @@ require_once 'core/init.php';
                         </thead>
                         <tbody>
                             <?php
+                            echo $username = $_SESSION['username'];
                             $db = DB::getInstance();
-                            $sql = "SELECT benutzerName, buchID, signatur, buchTitel, autorVorname, autorNachname, bibliothekName, standortBezeichnung
-                                            FROM buecher bu
+                            // Library ID of Book
+                            $sqlBuchBibl = "SELECT  bibliothekID
+                                            FROM  buecher bu                                             
+                                            INNER JOIN standorte st USING(standortID)
                                             INNER JOIN bibliotheken bi USING(bibliothekID)
-                                            INNER JOIN standorte st USING(bibliothekID)
-                                            INNER JOIN ausleihe au USING (buchID)
-                                            INNER JOIN benutzer be ON be.benutzerID=au.ausleiherID
-                                            INNER JOIN buchStatus bus USING (buchStatusID)
-                                            WHERE buchStatusID=2;";
-                            $queryTable = $db->tableOperations($sql, PDO::FETCH_BOTH);
-                            // $buchIdArray = [];
-                            // $counter = -1;
+                                            WHERE buchID=?;";
+                            // Buchliste
+                            $sql = "SELECT buchID, signatur, buchTitel, autorVorname, autorNachname, bibliothekName, standortBezeichnung, bibliothekID, standortID
+                                            FROM buecher bu
+                                            INNER JOIN standorte st USING(standortID)
+                                            INNER JOIN bibliotheken bi USING(bibliothekID)
+                                            WHERE buchStatusID=?;"; // buchStatus-> 1:'vorhanden', 2:'ausgelieht', 3:'vermisst', 4:'gloescht'
+                            $queryTable = $db->getRows($sql, [1]);
                             foreach ($queryTable as $items) {
-                                $buchID = $items['1'];
-                                // array_push($buchIdArray, $signature);
+                                $buchID = $items['0'];
+                                $queryTable1 = $db->getRow($sqlBuchBibl, [$buchID]);
+                                $bookLib = $queryTable1['bibliothekID'];
                             ?>
-                                <!-- 0-> benutzerNahme  1-> buchID -->
+                                <!-- 0-> benutzerNahme  0-> buchID  7-> bibliothekID-->
+                                <td scope="row"> <?php echo $items['1']; ?> </td>
                                 <td scope="row"> <?php echo $items['2']; ?> </td>
                                 <td scope="row"> <?php echo $items['3']; ?> </td>
                                 <td scope="row"> <?php echo $items['4']; ?> </td>
                                 <td scope="row"> <?php echo $items['5']; ?> </td>
                                 <td scope="row"> <?php echo $items['6']; ?> </td>
-                                <td scope="row"> <?php echo $items['7']; ?> </td>
                                 <td scope="row">
-
-                                    <form method="post" action="selfBorrowRecords.php">
+                                    <form method="post" action="borrowSelfRecords.php">
                                         <input type="label" name="buchID" class="form-control button d-none" id="" value="<?= $buchID ?>">
-                                        <input type="submit" name="buchwahl" class="form-control button d-non" id="" value="Ausleihe">
+                                        <?php if ($bookLib == $_SESSION['library']) {
+                                            echo '<input type="submit" name="buchwahl" class="form-control button d-non" id="" value="Ausleihe">';
+                                        }
+                                        ?>
                                     </form>
 
                                 </td>
@@ -78,7 +84,5 @@ require_once 'core/init.php';
         </div>
     </div>
 </div>
-
-
 
 <?php require_once 'themes/footer.php'; ?>
